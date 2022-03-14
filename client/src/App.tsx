@@ -9,7 +9,7 @@ import {
   EuiPageBody,
   EuiPageHeader,
   EuiText,
-  EuiCard
+  EuiButtonEmpty
 } from '@elastic/eui';
 import './App.css';
 import Header from './components/Header';
@@ -92,7 +92,7 @@ function App() {
         </EuiPageHeader>
         <EuiPageBody style={{ display: 'flex', flexDirection: 'row', width: '100%', overflowY: 'hidden' }}>
           <EuiPanel style={{ height: "600px", width: "500px" }}>
-            <EuiButton onClick={onAddPropertyClick} >Add Property</EuiButton>
+            <EuiButtonEmpty onClick={onAddPropertyClick} >Add Property</EuiButtonEmpty >
             <FormComponent />
             <DeleteConfirmation isVisible={isDeleteVisible} onClose={() => setIsDeleteVisible(false)} onDeleteSubmit={onDeleteSubmit} />
             <EuiListGroup flush={false} bordered={false} className='eui-yScrollWithShadows'>
