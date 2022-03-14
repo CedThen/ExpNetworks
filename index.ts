@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import { createHouse, deleteHouse, retrieveHouses, updateHouse } from './db/index'
-
+const path = require('path')
 const cors = require('cors')
 const app: Application = express();
 const port = 8081;
@@ -35,6 +35,8 @@ app.delete("/api/deleteHouse", async (req: Request, res: Response): Promise<Resp
   const houses = await retrieveHouses()
   return res.status(200).send(houses);
 })
+
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 try {
   app.listen(port, (): void => {
