@@ -38,10 +38,9 @@ function App() {
   }
 
   async function onEditSubmit(house: HouseInterface): Promise<void> {
-    console.log('editing', house)
     if (!data) return
     const houses = await updateHouse({ ...house, _id: data[selected]._id })
-    // setData(houses);
+    setData(houses);
   }
 
   function onDeleteClick() {

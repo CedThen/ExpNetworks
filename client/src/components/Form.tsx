@@ -42,7 +42,6 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }:
     onSubmit(createHouse())
     setIsFormVisible(false);
     resetFormState()
-
   }
 
   function createDraftFromHtml(str: string) {
@@ -67,7 +66,6 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }:
   }
 
   function resetFormState() {
-
     setAddress('')
     setSquareFeet('')
     setBedrooms('')
@@ -77,9 +75,18 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }:
     setEditorState(EditorState.createEmpty())
   }
 
+  function tryParseJSONObject(jsonString: string) {
+    try {
+      var o = JSON.parse(jsonString);
+      if (o && typeof o === "object") {
+        return o;
+      }
+    }
+    catch (e) { }
+    return jsonString;
+  };
 
   useEffect(() => {
-    console.log('initialVals', initialVals)
     if (!initialVals) {
       resetFormState()
       return
@@ -90,7 +97,9 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }:
     setBathrooms(initialVals.bathrooms)
     setPurchasePrice(initialVals.purchasePrice)
     setDate(moment(initialVals.datePurchased))
-    setEditorState(createDraftFromHtml(JSON.parse(initialVals.description)))
+
+
+    setEditorState(createDraftFromHtml(tryParseJSONObject(initialVals.description)))
   }, [initialVals])
 
   if (!isVisible) return <></>
