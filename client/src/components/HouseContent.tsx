@@ -1,25 +1,30 @@
 import { EuiTitle, EuiFlexGroup, EuiFlexItem, EuiStat, EuiPanel } from '@elastic/eui'
-import React from 'react'
 import { HouseInterface } from '../../../types'
-import { css } from '@emotion/react';
-
 
 function HouseContent({ house }: { house: HouseInterface }) {
+  const { address, squareFeet, bedrooms, datePurchased, bathrooms, purchasePrice, description } = house
+  const displayDate = new Date(datePurchased).toLocaleString();
   return (
-    <EuiPanel style={{ width: '100%', marginLeft: 40, padding: 10 }}>
-      <EuiTitle size='l'>
-        <h1 >{house.address}</h1>
+    <EuiPanel style={{ height: 600, width: '100%', marginLeft: 40, padding: 30, boxSizing: 'border-box' }}>
+      <EuiTitle size='l' >
+        <h1 style={{ padding: 5 }}>{address}</h1>
       </EuiTitle>
-      <EuiFlexGroup style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr' }}>
-        <EuiFlexItem >
-          <EuiStat title={`${house.squareFeet} ft\u00B2`} description="Square footage" />
-          <EuiStat title={`${house.bedrooms}`} description="Bedrooms" />
-        </EuiFlexItem>
-        <EuiFlexItem >
-          <EuiStat title={`${house.datePurchased}`} description="Date purchased" />
-          <EuiStat title={`${house.bathrooms}`} description="Bathrooms" />
-        </EuiFlexItem>
+      <EuiFlexGroup
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr ',
+          gridTemplateRows: '1fr 1fr 1fr',
+          margin: 10,
+          alignItems: 'center'
+        }}>
+
+        <EuiStat titleSize='m' title={`${squareFeet} ft\u00B2`} description="Square footage" />
+        <EuiStat titleSize='m' title={`${bedrooms}`} description="Bedrooms" />
+        <EuiStat titleSize='m' title={`${displayDate}`} description="Date purchased" />
+        <EuiStat titleSize='m' title={`${bathrooms}`} description="Bathrooms" />
+        <EuiStat titleSize='m' title={`$${purchasePrice}`} description="Purchase price" />
       </EuiFlexGroup>
+
     </EuiPanel>
   )
 }

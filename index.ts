@@ -23,7 +23,7 @@ app.get("/api/addHouse", async (req: Request, res: Response): Promise<Response> 
     squareFeet: 150000,
     bedrooms: 5,
     bathrooms: 3,
-    datePurchased: new Date().toUTCString(),
+    datePurchased: new Date().toISOString(),
     purchasePrice: 300000,
     description: 'Wow so cheap'
   }

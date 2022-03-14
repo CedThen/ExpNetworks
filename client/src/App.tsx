@@ -8,7 +8,6 @@ import {
   EuiLoadingSpinner
 } from '@elastic/eui';
 import './App.css';
-import { HouseInterface } from '../../types';
 import Header from './components/Header';
 import Page from './components/Page';
 import HouseContent from './components/HouseContent';
@@ -25,7 +24,7 @@ function App() {
       <Header />
       <Page >
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-          <EuiListGroup flush={true} bordered={true} style={{ height: "600px", width: "300px" }}>
+          <EuiListGroup flush={true} bordered={true} style={{ height: "600px", width: "500px" }}>
             {data?.map((house, index) =>
               <EuiListGroupItem
                 size='l'
