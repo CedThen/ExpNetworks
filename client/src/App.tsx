@@ -13,8 +13,9 @@ import HouseContent from './components/HouseContent';
 import useFetchData from './hooks/useFetchData';
 import Form from './components/Form'
 import { HouseInterface } from '../../types';
-import { createHouse, deleteHouse } from './apis';
+import { createHouse, deleteHouse, updateHouse } from './apis';
 import DeleteConfirmation from './components/DeleteConfirmation';
+
 
 
 function App() {
@@ -23,26 +24,33 @@ function App() {
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
   const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
   const [formInitialVals, setFormInitialVals] = useState<HouseInterface>()
-  if (!data) return <EuiLoadingSpinner size="l" />
+
 
   async function onFormSubmit(house: HouseInterface) {
     const houses = await createHouse(house)
     setData(houses)
   }
 
-  function onEditClick() {
-    // opens form with prefilled state
+  function onEditClick(): void {
     if (!data) return
     setIsFormVisible(true)
     setFormInitialVals(data[selected])
   }
 
-  async function onEditSubmit() {
-
+  async function onEditSubmit(house: HouseInterface): Promise<void> {
+    console.log('editing', house)
+    if (!data) return
+    const houses = await updateHouse({ ...house, _id: data[selected]._id })
+    // setData(houses);
   }
 
   function onDeleteClick() {
     setIsDeleteVisible(true);
+  }
+
+  function onAddPropertyClick() {
+    setIsFormVisible(true);
+    setFormInitialVals(undefined)
   }
 
   async function onDeleteSubmit() {
@@ -53,14 +61,22 @@ function App() {
     setData(houses)
   }
 
+  const FormComponent = () => {
+    return formInitialVals ?
+      <Form isVisible={isFormVisible} setIsFormVisible={setIsFormVisible} onSubmit={onEditSubmit} initialVals={formInitialVals} />
+      : <Form isVisible={isFormVisible} setIsFormVisible={setIsFormVisible} onSubmit={onFormSubmit} />
+  }
+
+
+  if (!data) return <EuiLoadingSpinner size="l" />
   return (
     <div className="App">
       <Header />
       <Page >
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
           <EuiPanel style={{ height: "600px", width: "500px" }}>
-            <EuiButton onClick={() => setIsFormVisible(true)} >Add Property</EuiButton>
-            <Form isVisible={isFormVisible} setIsFormVisible={setIsFormVisible} onSubmit={onFormSubmit} initialVals={formInitialVals} />
+            <EuiButton onClick={onAddPropertyClick} >Add Property</EuiButton>
+            <FormComponent />
             <DeleteConfirmation isVisible={isDeleteVisible} onClose={() => setIsDeleteVisible(false)} onDeleteSubmit={onDeleteSubmit} />
             <EuiListGroup flush={false} bordered={false} >
               {data?.map((house, index) =>

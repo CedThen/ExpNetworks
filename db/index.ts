@@ -29,7 +29,7 @@ export async function retrieveHouses(): Promise<Array<HouseInterface>> {
 export async function updateHouse(id: string): Promise<void> {
   await connect(connectionStr);
   const house = await HouseModel.findById(id).exec();
-  console.log('found house', house)
+
 }
 
 export async function deleteHouse(id: string): Promise<void> {

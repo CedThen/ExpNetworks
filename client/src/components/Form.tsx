@@ -17,13 +17,14 @@ import {
 } from '@elastic/eui'
 import moment, { Moment } from 'moment';
 import { Editor } from "react-draft-wysiwyg";
-import { ContentState, convertFromRaw, convertToRaw, EditorState } from 'draft-js';
+import { ContentState, convertToRaw, EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { HouseInterface } from '../../../types';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
-function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisible: boolean, setIsFormVisible: any, onSubmit: (house: any) => void, initialVals?: HouseInterface }) {
+function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }:
+  { isVisible: boolean, setIsFormVisible: any, onSubmit: (house: any) => void, initialVals?: HouseInterface }) {
   const [address, setAddress] = useState<string>(initialVals?.address || '')
   const [squareFeet, setSquareFeet] = useState<number | string>(initialVals?.squareFeet || '')
   const [bedrooms, setBedrooms] = useState<number | string>(initialVals?.bedrooms || '')
@@ -41,15 +42,14 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
     onSubmit(createHouse())
     setIsFormVisible(false);
     resetFormState()
+
   }
 
   function createDraftFromHtml(str: string) {
     const blocksFromHtml = htmlToDraft(str);
     const { contentBlocks, entityMap } = blocksFromHtml;
-    console.log('blocksFromHtml', blocksFromHtml)
     const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
     return EditorState.createWithContent(contentState);
-
   }
 
   function createHouse() {
@@ -67,6 +67,7 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
   }
 
   function resetFormState() {
+
     setAddress('')
     setSquareFeet('')
     setBedrooms('')
@@ -78,14 +79,17 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
 
 
   useEffect(() => {
-    if (!initialVals) return
+    console.log('initialVals', initialVals)
+    if (!initialVals) {
+      resetFormState()
+      return
+    }
     setAddress(initialVals.address)
     setSquareFeet(initialVals.squareFeet)
     setBedrooms(initialVals.bedrooms)
     setBathrooms(initialVals.bathrooms)
     setPurchasePrice(initialVals.purchasePrice)
     setDate(moment(initialVals.datePurchased))
-    // createDraftFromHtml(initialVals.description)
     setEditorState(createDraftFromHtml(JSON.parse(initialVals.description)))
   }, [initialVals])
 

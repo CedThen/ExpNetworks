@@ -26,6 +26,7 @@ app.post("/api/addHouse", async (req: Request, res: Response): Promise<Response>
 
 app.post("/api/updateHouse", async (req: Request, res: Response): Promise<Response> => {
   // req type
+  console.log('req.body', req.body)
   return res.status(200).send("noice");
 })
 
