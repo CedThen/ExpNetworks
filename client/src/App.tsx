@@ -17,24 +17,24 @@ import { createHouse, deleteHouse } from './apis';
 import DeleteConfirmation from './components/DeleteConfirmation';
 
 
-
 function App() {
   const [data, setData] = useFetchData();
   const [selected, setSelected] = useState<number>(0)
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
   const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
-
+  const [formInitialVals, setFormInitialVals] = useState<HouseInterface>()
   if (!data) return <EuiLoadingSpinner size="l" />
 
   async function onFormSubmit(house: HouseInterface) {
-    console.log('house', house)
     const houses = await createHouse(house)
     setData(houses)
   }
 
   function onEditClick() {
     // opens form with prefilled state
-
+    if (!data) return
+    setIsFormVisible(true)
+    setFormInitialVals(data[selected])
   }
 
   async function onEditSubmit() {
@@ -53,7 +53,6 @@ function App() {
     setData(houses)
   }
 
-
   return (
     <div className="App">
       <Header />
@@ -61,7 +60,7 @@ function App() {
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
           <EuiPanel style={{ height: "600px", width: "500px" }}>
             <EuiButton onClick={() => setIsFormVisible(true)} >Add Property</EuiButton>
-            <Form isVisible={isFormVisible} setIsFormVisible={setIsFormVisible} onSubmit={onFormSubmit} />
+            <Form isVisible={isFormVisible} setIsFormVisible={setIsFormVisible} onSubmit={onFormSubmit} initialVals={formInitialVals} />
             <DeleteConfirmation isVisible={isDeleteVisible} onClose={() => setIsDeleteVisible(false)} onDeleteSubmit={onDeleteSubmit} />
             <EuiListGroup flush={false} bordered={false} >
               {data?.map((house, index) =>

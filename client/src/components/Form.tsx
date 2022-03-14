@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   EuiText,
   EuiButton,
@@ -17,9 +17,10 @@ import {
 } from '@elastic/eui'
 import moment, { Moment } from 'moment';
 import { Editor } from "react-draft-wysiwyg";
-import { ContentState, convertToRaw, EditorState } from 'draft-js';
+import { ContentState, convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { HouseInterface } from '../../../types';
+import draftToHtml from 'draftjs-to-html';
 
 function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisible: boolean, setIsFormVisible: any, onSubmit: (house: any) => void, initialVals?: HouseInterface }) {
   const [address, setAddress] = useState<string>(initialVals?.address || '')
@@ -42,6 +43,9 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
   }
 
   function createHouse() {
+    const rawContentState = convertToRaw(editorState.getCurrentContent())
+    const markup = draftToHtml(rawContentState)
+    console.log('markup', markup)
     return {
       address,
       squareFeet,
@@ -49,7 +53,7 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
       bathrooms,
       purchasePrice,
       datePurchased: date?.format(),
-      description: convertToRaw(editorState.getCurrentContent())
+      description: markup
     }
   }
 
@@ -62,6 +66,18 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
     setDate(moment())
     setEditorState(EditorState.createEmpty())
   }
+
+
+  useEffect(() => {
+    if (!initialVals) return
+    setAddress(initialVals.address)
+    setSquareFeet(initialVals.squareFeet)
+    setBedrooms(initialVals.bedrooms)
+    setBathrooms(initialVals.bathrooms)
+    setPurchasePrice(initialVals.purchasePrice)
+    setDate(moment(initialVals.datePurchased))
+    // setEditorState(EditorState.createWithContent(convertFromRaw(initialVals.description)))
+  }, [initialVals])
 
   if (!isVisible) return <></>
 
