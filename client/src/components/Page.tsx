@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { EuiPageTemplate } from '@elastic/eui';
 
 const Page = ({ children }:
