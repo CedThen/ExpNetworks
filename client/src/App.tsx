@@ -5,7 +5,11 @@ import {
   EuiLoadingSpinner,
   EuiPanel,
   EuiButton,
-  EuiComboBox
+  EuiComboBox,
+  EuiPageBody,
+  EuiPageHeader,
+  EuiText,
+  EuiCard
 } from '@elastic/eui';
 import './App.css';
 import Header from './components/Header';
@@ -80,8 +84,13 @@ function App() {
     <div className="App">
       <Header />
       <Page >
-        <EuiComboBox options={options()} selectedOptions={selectedOptions} onChange={(selectedOptions) => setSelectedOptions(selectedOptions)} />
-        <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+        <EuiPageHeader style={{ display: 'flex', flexDirection: 'column' }}>
+
+          <EuiText>Select statistics</EuiText>
+          <EuiComboBox options={options()} selectedOptions={selectedOptions} onChange={(selectedOptions) => setSelectedOptions(selectedOptions)} fullWidth={true} style={{ margin: 10 }} />
+
+        </EuiPageHeader>
+        <EuiPageBody style={{ display: 'flex', flexDirection: 'row', width: '100%', overflowY: 'hidden' }}>
           <EuiPanel style={{ height: "600px", width: "500px" }}>
             <EuiButton onClick={onAddPropertyClick} >Add Property</EuiButton>
             <FormComponent />
@@ -92,12 +101,14 @@ function App() {
                   size='l'
                   onClick={() => setSelected(index)}
                   label={house.address} key={house._id}
+                  wrapText
+                  className='eui-yScrollWithShadows'
                 />
               )}
             </EuiListGroup>
           </EuiPanel>
           <HouseContent selectedOptions={selectedOptions} house={data[selected]} onEditClick={onEditClick} onDeleteClick={onDeleteClick} />
-        </div>
+        </EuiPageBody>
       </Page>
     </div>
   );
