@@ -11,3 +11,8 @@ export async function createHouse(house: HouseInterface): Promise<HouseInterface
   const response = await axios.post<HouseInterface[]>(`${ip}/api/addHouse`, house)
   return await response.data
 }
+
+export async function deleteHouse(houseId: string | undefined): Promise<HouseInterface[]> {
+  const response = await axios.delete<HouseInterface[]>(`${ip}/api/deleteHouse`, { data: { _id: houseId } })
+  return await response.data
+}

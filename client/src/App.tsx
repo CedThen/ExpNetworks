@@ -13,13 +13,16 @@ import HouseContent from './components/HouseContent';
 import useFetchData from './hooks/useFetchData';
 import Form from './components/Form'
 import { HouseInterface } from '../../types';
-import { createHouse } from './apis';
+import { createHouse, deleteHouse } from './apis';
+import DeleteConfirmation from './components/DeleteConfirmation';
+
 
 
 function App() {
   const [data, setData] = useFetchData();
   const [selected, setSelected] = useState<number>(0)
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
+  const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
 
   if (!data) return <EuiLoadingSpinner size="l" />
 
@@ -29,6 +32,28 @@ function App() {
     setData(houses)
   }
 
+  function onEditClick() {
+    // opens form with prefilled state
+
+  }
+
+  async function onEditSubmit() {
+
+  }
+
+  function onDeleteClick() {
+    setIsDeleteVisible(true);
+  }
+
+  async function onDeleteSubmit() {
+    setSelected(0);
+    setIsDeleteVisible(false);
+    let deletedId = data ? data[selected]._id : ''
+    const houses = await deleteHouse(deletedId)
+    setData(houses)
+  }
+
+
   return (
     <div className="App">
       <Header />
@@ -37,6 +62,7 @@ function App() {
           <EuiPanel style={{ height: "600px", width: "500px" }}>
             <EuiButton onClick={() => setIsFormVisible(true)} >Add Property</EuiButton>
             <Form isVisible={isFormVisible} setIsFormVisible={setIsFormVisible} onSubmit={onFormSubmit} />
+            <DeleteConfirmation isVisible={isDeleteVisible} onClose={() => setIsDeleteVisible(false)} onDeleteSubmit={onDeleteSubmit} />
             <EuiListGroup flush={false} bordered={false} >
               {data?.map((house, index) =>
                 <EuiListGroupItem
@@ -47,7 +73,7 @@ function App() {
               )}
             </EuiListGroup>
           </EuiPanel>
-          <HouseContent house={data[selected]} />
+          <HouseContent house={data[selected]} onEditClick={onEditClick} onDeleteClick={onDeleteClick} />
         </div>
       </Page>
     </div>

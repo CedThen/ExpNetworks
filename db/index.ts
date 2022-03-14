@@ -34,6 +34,5 @@ export async function updateHouse(id: string): Promise<void> {
 
 export async function deleteHouse(id: string): Promise<void> {
   await connect(connectionStr);
-  const house = await HouseModel.findById(id).exec();
-  console.log('found house', house)
+  await HouseModel.deleteOne({ _id: id })
 }

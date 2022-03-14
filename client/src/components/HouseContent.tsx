@@ -1,7 +1,9 @@
-import { EuiTitle, EuiFlexGroup, EuiStat, EuiPanel, EuiText, EuiButton } from '@elastic/eui'
+import { EuiTitle, EuiFlexGroup, EuiStat, EuiPanel, EuiText, EuiButton, EuiModal } from '@elastic/eui'
+
 import { HouseInterface } from '../../../types'
 
-function HouseContent({ house }: { house: HouseInterface }) {
+function HouseContent({ house, onDeleteClick, onEditClick }:
+  { house: HouseInterface, onDeleteClick: () => void, onEditClick: (house: HouseInterface) => void }) {
   const { address, squareFeet, bedrooms, datePurchased, bathrooms, purchasePrice, description } = house
   const displaySquareFeet = new Intl.NumberFormat().format(squareFeet)
   const displayDate = new Date(datePurchased).toLocaleString();
@@ -14,7 +16,7 @@ function HouseContent({ house }: { house: HouseInterface }) {
     <EuiPanel style={{ position: 'relative', height: 600, width: '100%', marginLeft: 40, padding: 30, boxSizing: 'border-box' }}>
       <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: 100 }}>
         <EuiButton size='s' iconType="pencil" />
-        <EuiButton size='s' color='danger' iconType="trash" />
+        <EuiButton size='s' color='danger' iconType="trash" onClick={onDeleteClick} />
       </div>
       <EuiTitle size='l' >
         <h1 style={{ padding: 5 }}>{address}</h1>

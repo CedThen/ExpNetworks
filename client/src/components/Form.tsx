@@ -12,7 +12,6 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiDatePicker,
-  EuiSpacer,
   EuiFlexGroup,
   EuiFlexItem
 } from '@elastic/eui'
@@ -21,9 +20,6 @@ import { Editor } from "react-draft-wysiwyg";
 import { ContentState, convertToRaw, EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { HouseInterface } from '../../../types';
-import { fontSize } from '@elastic/eui/src/global_styling/variables/text';
-
-
 
 function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisible: boolean, setIsFormVisible: any, onSubmit: (house: any) => void, initialVals?: HouseInterface }) {
   const [address, setAddress] = useState<string>(initialVals?.address || '')
@@ -40,7 +36,6 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
   }
 
   const onSubmitClick = (): void => {
-    console.log('date', date)
     onSubmit(createHouse())
     setIsFormVisible(false);
     resetFormState()
@@ -64,7 +59,7 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
     setBedrooms('')
     setBathrooms('')
     setPurchasePrice('')
-    setDate(null)
+    setDate(moment())
     setEditorState(EditorState.createEmpty())
   }
 
