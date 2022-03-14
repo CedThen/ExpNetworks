@@ -40,6 +40,7 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
   }
 
   const onSubmitClick = (): void => {
+    console.log('date', date)
     onSubmit(createHouse())
     setIsFormVisible(false);
     resetFormState()
@@ -52,7 +53,7 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
       bedrooms,
       bathrooms,
       purchasePrice,
-      date,
+      datePurchased: date?.format(),
       description: convertToRaw(editorState.getCurrentContent())
     }
   }

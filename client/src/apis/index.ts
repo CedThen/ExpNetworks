@@ -7,7 +7,7 @@ export function retrieveHouses(setData: (d: HouseInterface[]) => void): void {
     .then(response => setData(response.data))
 }
 
-export function createHouse(house: HouseInterface, setData: (d: HouseInterface[]) => void): void {
-  axios.post<HouseInterface[]>(`${ip}/api/addHouse`, house)
-    .then(response => setData(response.data))
+export async function createHouse(house: HouseInterface): Promise<HouseInterface[]> {
+  const response = await axios.post<HouseInterface[]>(`${ip}/api/addHouse`, house)
+  return await response.data
 }

@@ -24,11 +24,9 @@ function App() {
   if (!data) return <EuiLoadingSpinner size="l" />
 
   async function onFormSubmit(house: HouseInterface) {
-    console.log('hello', house)
-    await createHouse(house, setData)
-    // api call to create house
-    // it should return with new data, so setData to the new stuff
-
+    console.log('house', house)
+    const houses = await createHouse(house)
+    setData(houses)
   }
 
   return (

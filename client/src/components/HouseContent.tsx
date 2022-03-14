@@ -1,4 +1,4 @@
-import { EuiTitle, EuiFlexGroup, EuiStat, EuiPanel, EuiText } from '@elastic/eui'
+import { EuiTitle, EuiFlexGroup, EuiStat, EuiPanel, EuiText, EuiButton } from '@elastic/eui'
 import { HouseInterface } from '../../../types'
 
 function HouseContent({ house }: { house: HouseInterface }) {
@@ -11,7 +11,11 @@ function HouseContent({ house }: { house: HouseInterface }) {
   }).format(purchasePrice)
 
   return (
-    <EuiPanel style={{ height: 600, width: '100%', marginLeft: 40, padding: 30, boxSizing: 'border-box' }}>
+    <EuiPanel style={{ position: 'relative', height: 600, width: '100%', marginLeft: 40, padding: 30, boxSizing: 'border-box' }}>
+      <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: 100 }}>
+        <EuiButton size='s' iconType="pencil" />
+        <EuiButton size='s' color='danger' iconType="trash" />
+      </div>
       <EuiTitle size='l' >
         <h1 style={{ padding: 5 }}>{address}</h1>
       </EuiTitle>
