@@ -12,20 +12,20 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiDatePicker,
-  EuiSpacer
+  EuiSpacer,
+  EuiFlexGroup,
+  EuiFlexItem
 } from '@elastic/eui'
 import moment, { Moment } from 'moment';
 import { Editor } from "react-draft-wysiwyg";
-import { ContentState, EditorState } from 'draft-js';
+import { ContentState, convertToRaw, EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { HouseInterface } from '../../../types';
+import { fontSize } from '@elastic/eui/src/global_styling/variables/text';
 
 
 
-function Form({ isVisible, setIsFormVisible, initialVals }: { isVisible: boolean, setIsFormVisible: any, initialVals?: HouseInterface }) {
-
-
-
+function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisible: boolean, setIsFormVisible: any, onSubmit: (house: any) => void, initialVals?: HouseInterface }) {
   const [address, setAddress] = useState<string>(initialVals?.address || '')
   const [squareFeet, setSquareFeet] = useState<number | string>(initialVals?.squareFeet || '')
   const [bedrooms, setBedrooms] = useState<number | string>(initialVals?.bedrooms || '')
@@ -34,13 +34,27 @@ function Form({ isVisible, setIsFormVisible, initialVals }: { isVisible: boolean
   const [date, setDate] = useState<Moment | null>(moment(initialVals?.datePurchased) || moment())
   const [editorState, setEditorState] = useState(EditorState.createWithContent(ContentState.createFromText(initialVals?.description || "")))
 
-  const onClose = () => {
-    // reset field state
+  const onClose = (): void => {
     resetFormState()
     setIsFormVisible(false)
   }
-  const onSubmit = () => {
-    console.log('editorState', editorState)
+
+  const onSubmitClick = (): void => {
+    onSubmit(createHouse())
+    setIsFormVisible(false);
+    resetFormState()
+  }
+
+  function createHouse() {
+    return {
+      address,
+      squareFeet,
+      bedrooms,
+      bathrooms,
+      purchasePrice,
+      date,
+      description: convertToRaw(editorState.getCurrentContent())
+    }
   }
 
   function resetFormState() {
@@ -70,12 +84,18 @@ function Form({ isVisible, setIsFormVisible, initialVals }: { isVisible: boolean
           <EuiFormRow label="Square feet">
             <EuiFieldNumber append={"ft\u00B2"} value={squareFeet} onChange={(e) => setSquareFeet(parseInt(e.target.value))} />
           </EuiFormRow>
-          <EuiFormRow label="Bedrooms">
-            <EuiFieldNumber value={bedrooms} onChange={(e) => setBedrooms(e.target.value)} />
-          </EuiFormRow>
-          <EuiFormRow label="Bathrooms">
-            <EuiFieldNumber value={bathrooms} onChange={(e) => setBathrooms(e.target.value)} />
-          </EuiFormRow>
+          <EuiFlexGroup style={{ maxWidth: 400, boxSizing: 'border-box', marginTop: 1, marginBottom: 1 }}>
+            <EuiFlexItem>
+              <EuiFormRow label="Bedrooms">
+                <EuiFieldNumber value={bedrooms} onChange={(e) => setBedrooms(e.target.value)} />
+              </EuiFormRow>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <EuiFormRow label="Bathrooms">
+                <EuiFieldNumber value={bathrooms} onChange={(e) => setBathrooms(e.target.value)} />
+              </EuiFormRow>
+            </EuiFlexItem>
+          </EuiFlexGroup>
           <EuiFormRow label="Date Purchased">
             <EuiDatePicker showTimeSelect selected={date} onChange={(d) => setDate(d)} />
           </EuiFormRow>
@@ -83,9 +103,8 @@ function Form({ isVisible, setIsFormVisible, initialVals }: { isVisible: boolean
             <EuiFieldNumber prepend={"$"} value={purchasePrice} onChange={(e) => setPurchasePrice(e.target.value)} />
           </EuiFormRow>
         </EuiForm>
-        <EuiSpacer />
         <div >
-          <EuiText><h2>Description</h2></EuiText>
+          <EuiText><h3>Description</h3></EuiText>
           <Editor editorState={editorState} onEditorStateChange={setEditorState} />
         </div>
       </EuiModalBody>
@@ -93,7 +112,7 @@ function Form({ isVisible, setIsFormVisible, initialVals }: { isVisible: boolean
         <EuiButton type="submit" onClick={onClose}>
           Cancel
         </EuiButton>
-        <EuiButton type="submit" fill onClick={onSubmit}>
+        <EuiButton type="submit" fill onClick={onSubmitClick}>
           Save property
         </EuiButton>
       </EuiModalFooter>

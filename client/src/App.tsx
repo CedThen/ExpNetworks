@@ -12,6 +12,8 @@ import Page from './components/Page';
 import HouseContent from './components/HouseContent';
 import useFetchData from './hooks/useFetchData';
 import Form from './components/Form'
+import { HouseInterface } from '../../types';
+import { createHouse } from './apis';
 
 
 function App() {
@@ -21,6 +23,14 @@ function App() {
 
   if (!data) return <EuiLoadingSpinner size="l" />
 
+  async function onFormSubmit(house: HouseInterface) {
+    console.log('hello', house)
+    await createHouse(house, setData)
+    // api call to create house
+    // it should return with new data, so setData to the new stuff
+
+  }
+
   return (
     <div className="App">
       <Header />
@@ -28,7 +38,7 @@ function App() {
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
           <EuiPanel style={{ height: "600px", width: "500px" }}>
             <EuiButton onClick={() => setIsFormVisible(true)} >Add Property</EuiButton>
-            <Form isVisible={isFormVisible} setIsFormVisible={setIsFormVisible} />
+            <Form isVisible={isFormVisible} setIsFormVisible={setIsFormVisible} onSubmit={onFormSubmit} />
             <EuiListGroup flush={false} bordered={false} >
               {data?.map((house, index) =>
                 <EuiListGroupItem

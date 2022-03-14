@@ -1,6 +1,5 @@
 import { EuiTitle, EuiFlexGroup, EuiStat, EuiPanel, EuiText } from '@elastic/eui'
 import { HouseInterface } from '../../../types'
-import { formatter } from '../helpers';
 
 function HouseContent({ house }: { house: HouseInterface }) {
   const { address, squareFeet, bedrooms, datePurchased, bathrooms, purchasePrice, description } = house
