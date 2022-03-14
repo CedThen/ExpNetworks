@@ -1,10 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   EuiListGroup,
   EuiListGroupItem,
-  EuiTitle,
-  EuiText,
-  EuiCard,
   EuiLoadingSpinner,
   EuiPanel,
   EuiButton,
@@ -18,14 +15,11 @@ import Form from './components/Form'
 
 
 function App() {
-  const [data] = useFetchData();
+  const [data, setData] = useFetchData();
   const [selected, setSelected] = useState<number>(0)
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
 
   if (!data) return <EuiLoadingSpinner size="l" />
-
-
-
 
   return (
     <div className="App">
