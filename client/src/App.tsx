@@ -5,6 +5,7 @@ import {
   EuiLoadingSpinner,
   EuiPanel,
   EuiButton,
+  EuiComboBox
 } from '@elastic/eui';
 import './App.css';
 import Header from './components/Header';
@@ -24,7 +25,7 @@ function App() {
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
   const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
   const [formInitialVals, setFormInitialVals] = useState<HouseInterface>()
-
+  const [selectedOptions, setSelectedOptions] = useState<any>(options())
 
   async function onFormSubmit(house: HouseInterface) {
     const houses = await createHouse(house)
@@ -66,12 +67,23 @@ function App() {
       : <Form isVisible={isFormVisible} setIsFormVisible={setIsFormVisible} onSubmit={onFormSubmit} />
   }
 
+  function options() {
+    return [
+      { label: 'square feet' },
+      { label: 'bedrooms' },
+      { label: 'Date purchased' },
+      { label: 'bathrooms' },
+      { label: 'Purchase price' },
+    ]
+  }
 
+  console.log('selectedOptions', selectedOptions)
   if (!data) return <EuiLoadingSpinner size="l" />
   return (
     <div className="App">
       <Header />
       <Page >
+        <EuiComboBox options={options()} selectedOptions={selectedOptions} onChange={(selectedOptions) => setSelectedOptions(selectedOptions)} />
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
           <EuiPanel style={{ height: "600px", width: "500px" }}>
             <EuiButton onClick={onAddPropertyClick} >Add Property</EuiButton>
@@ -87,7 +99,7 @@ function App() {
               )}
             </EuiListGroup>
           </EuiPanel>
-          <HouseContent house={data[selected]} onEditClick={onEditClick} onDeleteClick={onDeleteClick} />
+          <HouseContent selectedOptions={selectedOptions} house={data[selected]} onEditClick={onEditClick} onDeleteClick={onDeleteClick} />
         </div>
       </Page>
     </div>

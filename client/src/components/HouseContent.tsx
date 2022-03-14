@@ -11,8 +11,9 @@ function isJsonString(str: string) {
   return true
 }
 
-function HouseContent({ house, onDeleteClick, onEditClick }:
-  { house: HouseInterface, onDeleteClick: () => void, onEditClick: () => void }) {
+
+function HouseContent({ house, onDeleteClick, onEditClick, selectedOptions }:
+  { house: HouseInterface, onDeleteClick: () => void, onEditClick: () => void, selectedOptions: { label: string }[] }) {
   const { address, squareFeet, bedrooms, datePurchased, bathrooms, purchasePrice, description } = house
   const displaySquareFeet = new Intl.NumberFormat().format(squareFeet)
   const displayDate = new Date(datePurchased).toLocaleString();
@@ -21,6 +22,20 @@ function HouseContent({ house, onDeleteClick, onEditClick }:
     currency: 'USD'
   }).format(purchasePrice)
   const markup = isJsonString(description) ? ReactHtmlParser(JSON.parse(description)) : ReactHtmlParser(description)
+  console.log('selectedOptions', selectedOptions)
+  const Stats = {
+    'square feet': <EuiStat titleSize='m' title={`${displaySquareFeet} ft\u00B2`} description="Square footage" />,
+    'bedrooms': <EuiStat titleSize='m' title={`${bedrooms}`} description="Bedrooms" />,
+    'Date purchased': <EuiStat titleSize='m' title={`${displayDate}`} description="Date purchased" />,
+    'bathrooms': <EuiStat titleSize='m' title={`${bathrooms}`} description="Bathrooms" />,
+    'Purchase price': <EuiStat titleSize='m' title={`${displayPrice}`} description="Purchase price" />
+  }
+  const filteredStats = () => {
+    // @ts-ignore
+    let arr = selectedOptions.map((option: any) => Stats[option.label])
+    console.log('arr', arr)
+    return arr;
+  }
 
   return (
     <EuiPanel style={{ position: 'relative', height: 600, width: '100%', marginLeft: 40, padding: 30, boxSizing: 'border-box' }}>
@@ -39,12 +54,7 @@ function HouseContent({ house, onDeleteClick, onEditClick }:
           margin: 10,
           alignItems: 'center'
         }}>
-
-        <EuiStat titleSize='m' title={`${displaySquareFeet} ft\u00B2`} description="Square footage" />
-        <EuiStat titleSize='m' title={`${bedrooms}`} description="Bedrooms" />
-        <EuiStat titleSize='m' title={`${displayDate}`} description="Date purchased" />
-        <EuiStat titleSize='m' title={`${bathrooms}`} description="Bathrooms" />
-        <EuiStat titleSize='m' title={`${displayPrice}`} description="Purchase price" />
+        {filteredStats()}
       </EuiFlexGroup>
       <br />
       <EuiText textAlign='left'>
