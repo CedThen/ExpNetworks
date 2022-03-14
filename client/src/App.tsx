@@ -17,8 +17,6 @@ import { HouseInterface } from '../../types';
 import { createHouse, deleteHouse, updateHouse } from './apis';
 import DeleteConfirmation from './components/DeleteConfirmation';
 
-
-
 function App() {
   const [data, setData] = useFetchData();
   const [selected, setSelected] = useState<number>(0)
@@ -77,7 +75,6 @@ function App() {
     ]
   }
 
-  console.log('selectedOptions', selectedOptions)
   if (!data) return <EuiLoadingSpinner size="l" />
   return (
     <div className="App">

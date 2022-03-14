@@ -22,18 +22,17 @@ function HouseContent({ house, onDeleteClick, onEditClick, selectedOptions }:
     currency: 'USD'
   }).format(purchasePrice)
   const markup = isJsonString(description) ? ReactHtmlParser(JSON.parse(description)) : ReactHtmlParser(description)
-  console.log('selectedOptions', selectedOptions)
+
   const Stats = {
-    'square feet': <EuiStat titleSize='m' title={`${displaySquareFeet} ft\u00B2`} description="Square footage" />,
-    'bedrooms': <EuiStat titleSize='m' title={`${bedrooms}`} description="Bedrooms" />,
-    'Date purchased': <EuiStat titleSize='m' title={`${displayDate}`} description="Date purchased" />,
-    'bathrooms': <EuiStat titleSize='m' title={`${bathrooms}`} description="Bathrooms" />,
-    'Purchase price': <EuiStat titleSize='m' title={`${displayPrice}`} description="Purchase price" />
+    'square feet': <EuiStat key={0} titleSize='m' title={`${displaySquareFeet} ft\u00B2`} description="Square footage" />,
+    'bedrooms': <EuiStat key={1} titleSize='m' title={`${bedrooms}`} description="Bedrooms" />,
+    'Date purchased': <EuiStat key={2} titleSize='m' title={`${displayDate}`} description="Date purchased" />,
+    'bathrooms': <EuiStat key={3} titleSize='m' title={`${bathrooms}`} description="Bathrooms" />,
+    'Purchase price': <EuiStat key={4} titleSize='m' title={`${displayPrice}`} description="Purchase price" />
   }
   const filteredStats = () => {
     // @ts-ignore
     let arr = selectedOptions.map((option: any) => Stats[option.label])
-    console.log('arr', arr)
     return arr;
   }
 
