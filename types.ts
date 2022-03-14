@@ -4,7 +4,7 @@ export interface HouseInterface {
   squareFeet: number;
   bedrooms: number;
   bathrooms: number;
-  datePurchased: string;
+  datePurchased: Date;
   purchasePrice: number;
-  description: string;
+  description: any;
 }

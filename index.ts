@@ -16,18 +16,11 @@ app.get("/api/retrieveHouses", async (req: Request, res: Response): Promise<Resp
   return res.status(200).send(houses);
 })
 
-app.get("/api/addHouse", async (req: Request, res: Response): Promise<Response> => {
-  console.log('adding house')
-  const dummyHouse: HouseInterface = {
-    address: "100 Yum St",
-    squareFeet: 150000,
-    bedrooms: 5,
-    bathrooms: 3,
-    datePurchased: new Date().toISOString(),
-    purchasePrice: 300000,
-    description: 'Wow so cheap'
-  }
-  const houses = await createHouse(dummyHouse);
+app.post("/api/addHouse", async (req: Request, res: Response): Promise<Response> => {
+  const newHouse = req.body
+  console.log('date', newHouse.datePurchased)
+  await createHouse({ ...newHouse, datePurchased: new Date(newHouse.datePurchased), description: JSON.stringify(newHouse.description) })
+  const houses = await retrieveHouses();
   return res.status(200).send(houses);
 })
 
