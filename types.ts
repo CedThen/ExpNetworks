@@ -1,10 +1,10 @@
 export interface HouseInterface {
-  id: string;
+  _id?: string;
   address: string;
   squareFeet: number;
   bedrooms: number;
   bathrooms: number;
-  datePurchased: Date;
+  datePurchased: string;
   purchasePrice: number;
   description: string;
 }

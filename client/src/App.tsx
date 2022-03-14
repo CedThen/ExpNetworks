@@ -1,35 +1,35 @@
 import { useEffect, useState } from 'react';
 import {
+  EuiListGroup,
+  EuiListGroupItem,
 
-  EuiTitle,
   EuiText
 } from '@elastic/eui';
-import { retrieveHouses } from './apis';
 import './App.css';
 import { HouseInterface } from '../../types';
 import Header from './components/Header';
+import Page from './components/Page';
+import useFetchData from './hooks/useFetchData';
+
 
 function App() {
-  const [data, setData] = useState<Array<HouseInterface>>();
+  const [data] = useFetchData();
+  const [selected, setSelected] = useState<number>(0)
 
-  useEffect(() => {
-    getHouses();
-  }, [])
-
-  async function getHouses() {
-    const houses = await retrieveHouses()
-    console.log('houses', houses)
-    setData(houses);
+  function listClickHandler(e: any) {
+    console.log('click event', e)
   }
+
   return (
     <div className="App">
       <Header />
-      <EuiTitle size='l'
-
-      ><h1>Your Properties</h1></EuiTitle>
-      <div>
-
-      </div>
+      <Page >
+        <EuiListGroup flush={true} bordered={true}>
+          {data?.map(house =>
+            <EuiListGroupItem onClick={listClickHandler} label={house.address} key={house._id} />
+          )}
+        </EuiListGroup>
+      </Page>
     </div>
   );
 }

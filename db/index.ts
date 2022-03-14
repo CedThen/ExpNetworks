@@ -7,7 +7,7 @@ const houseSchema = new Schema<HouseInterface>({
   squareFeet: Number,
   bedrooms: Number,
   bathrooms: Number,
-  datePurchased: Date,
+  datePurchased: String,
   purchasePrice: Number,
   description: String,
 })
