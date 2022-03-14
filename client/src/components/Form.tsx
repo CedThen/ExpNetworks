@@ -21,6 +21,7 @@ import { ContentState, convertFromRaw, convertToRaw, EditorState } from 'draft-j
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { HouseInterface } from '../../../types';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 
 function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisible: boolean, setIsFormVisible: any, onSubmit: (house: any) => void, initialVals?: HouseInterface }) {
   const [address, setAddress] = useState<string>(initialVals?.address || '')
@@ -42,10 +43,18 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
     resetFormState()
   }
 
+  function createDraftFromHtml(str: string) {
+    const blocksFromHtml = htmlToDraft(str);
+    const { contentBlocks, entityMap } = blocksFromHtml;
+    console.log('blocksFromHtml', blocksFromHtml)
+    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+    return EditorState.createWithContent(contentState);
+
+  }
+
   function createHouse() {
     const rawContentState = convertToRaw(editorState.getCurrentContent())
     const markup = draftToHtml(rawContentState)
-    console.log('markup', markup)
     return {
       address,
       squareFeet,
@@ -76,7 +85,8 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }: { isVisibl
     setBathrooms(initialVals.bathrooms)
     setPurchasePrice(initialVals.purchasePrice)
     setDate(moment(initialVals.datePurchased))
-    // setEditorState(EditorState.createWithContent(convertFromRaw(initialVals.description)))
+    // createDraftFromHtml(initialVals.description)
+    setEditorState(createDraftFromHtml(JSON.parse(initialVals.description)))
   }, [initialVals])
 
   if (!isVisible) return <></>

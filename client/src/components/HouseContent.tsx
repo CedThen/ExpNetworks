@@ -2,6 +2,15 @@ import { EuiTitle, EuiFlexGroup, EuiStat, EuiPanel, EuiText, EuiButton } from '@
 import { HouseInterface } from '../../../types'
 import ReactHtmlParser from 'react-html-parser';
 
+function isJsonString(str: string) {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
+}
+
 function HouseContent({ house, onDeleteClick, onEditClick }:
   { house: HouseInterface, onDeleteClick: () => void, onEditClick: () => void }) {
   const { address, squareFeet, bedrooms, datePurchased, bathrooms, purchasePrice, description } = house
@@ -12,7 +21,7 @@ function HouseContent({ house, onDeleteClick, onEditClick }:
     currency: 'USD'
   }).format(purchasePrice)
 
-  const markup = ReactHtmlParser(JSON.parse(description))
+  const markup = isJsonString(description) ? ReactHtmlParser(JSON.parse(description)) : description
 
   return (
     <EuiPanel style={{ position: 'relative', height: 600, width: '100%', marginLeft: 40, padding: 30, boxSizing: 'border-box' }}>
