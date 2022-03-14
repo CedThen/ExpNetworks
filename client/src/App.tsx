@@ -95,14 +95,14 @@ function App() {
             <EuiButton onClick={onAddPropertyClick} >Add Property</EuiButton>
             <FormComponent />
             <DeleteConfirmation isVisible={isDeleteVisible} onClose={() => setIsDeleteVisible(false)} onDeleteSubmit={onDeleteSubmit} />
-            <EuiListGroup flush={false} bordered={false} >
+            <EuiListGroup flush={false} bordered={false} className='eui-yScrollWithShadows'>
               {data?.map((house, index) =>
                 <EuiListGroupItem
                   size='l'
                   onClick={() => setSelected(index)}
                   label={house.address} key={house._id}
                   wrapText
-                  className='eui-yScrollWithShadows'
+
                 />
               )}
             </EuiListGroup>
