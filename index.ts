@@ -8,17 +8,7 @@ const port = 8081;
 // Body parsing Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors())
-// app.get("/", async (req: Request, res: Response): Promise<Response> => {
-//   const houses = await retrieveHouses();
-//   const firstId: string = houses[1].id
-
-//   const findHouse = updateHouse(firstId)
-
-//   return res.status(200).send({
-//     message: "Hello World!",
-//   });
-// });
+app.use(cors());
 
 app.get("/api/retrieveHouses", async (req: Request, res: Response): Promise<Response> => {
   const houses = await retrieveHouses();
