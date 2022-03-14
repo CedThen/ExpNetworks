@@ -28,8 +28,7 @@ export async function retrieveHouses(): Promise<Array<HouseInterface>> {
 
 export async function updateHouse(house: HouseInterface): Promise<void> {
   await connect(connectionStr);
-  console.log('house in db', house)
-  const res = await HouseModel.updateOne({ _id: house._id }, {
+  await HouseModel.updateOne({ _id: house._id }, {
     $set: {
       address: house.address,
       squareFeet: house.squareFeet,
@@ -40,7 +39,7 @@ export async function updateHouse(house: HouseInterface): Promise<void> {
       description: house.description
     }
   })
-  console.log('res of updating', res)
+
 }
 
 export async function deleteHouse(id: string): Promise<void> {

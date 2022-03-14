@@ -17,14 +17,12 @@ app.get("/api/retrieveHouses", async (req: Request, res: Response): Promise<Resp
 
 app.post("/api/addHouse", async (req: Request, res: Response): Promise<Response> => {
   const newHouse = req.body
-
   await createHouse({ ...newHouse, datePurchased: new Date(newHouse.datePurchased), description: JSON.stringify(newHouse.description) })
   const houses = await retrieveHouses();
   return res.status(200).send(houses);
 })
 
 app.post("/api/updateHouse", async (req: Request, res: Response): Promise<Response> => {
-  console.log('req.body', req.body)
   const updatedHouse = req.body
   await updateHouse(updatedHouse)
   const houses = await retrieveHouses()

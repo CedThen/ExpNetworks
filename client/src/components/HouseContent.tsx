@@ -20,7 +20,6 @@ function HouseContent({ house, onDeleteClick, onEditClick }:
     style: 'currency',
     currency: 'USD'
   }).format(purchasePrice)
-
   const markup = isJsonString(description) ? ReactHtmlParser(JSON.parse(description)) : ReactHtmlParser(description)
 
   return (
