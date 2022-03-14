@@ -1,6 +1,5 @@
 import express, { Application, Request, Response } from "express";
 import { createHouse, deleteHouse, retrieveHouses, updateHouse } from './db/index'
-import { HouseInterface } from "./types";
 
 const cors = require('cors')
 const app: Application = express();
@@ -18,7 +17,7 @@ app.get("/api/retrieveHouses", async (req: Request, res: Response): Promise<Resp
 
 app.post("/api/addHouse", async (req: Request, res: Response): Promise<Response> => {
   const newHouse = req.body
-  console.log('date', newHouse.datePurchased)
+
   await createHouse({ ...newHouse, datePurchased: new Date(newHouse.datePurchased), description: JSON.stringify(newHouse.description) })
   const houses = await retrieveHouses();
   return res.status(200).send(houses);
@@ -28,20 +27,16 @@ app.post("/api/updateHouse", async (req: Request, res: Response): Promise<Respon
   console.log('req.body', req.body)
   const updatedHouse = req.body
   await updateHouse(updatedHouse)
-
   const houses = await retrieveHouses()
   return res.status(200).send(houses);
 })
 
 app.delete("/api/deleteHouse", async (req: Request, res: Response): Promise<Response> => {
-  // req type
   const deleteId = req.body;
   await deleteHouse(deleteId)
   const houses = await retrieveHouses()
   return res.status(200).send(houses);
 })
-
-
 
 try {
   app.listen(port, (): void => {

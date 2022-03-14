@@ -97,8 +97,6 @@ function Form({ isVisible, setIsFormVisible, onSubmit, initialVals }:
     setBathrooms(initialVals.bathrooms)
     setPurchasePrice(initialVals.purchasePrice)
     setDate(moment(initialVals.datePurchased))
-
-
     setEditorState(createDraftFromHtml(tryParseJSONObject(initialVals.description)))
   }, [initialVals])
 

@@ -21,7 +21,7 @@ function HouseContent({ house, onDeleteClick, onEditClick }:
     currency: 'USD'
   }).format(purchasePrice)
 
-  const markup = isJsonString(description) ? ReactHtmlParser(JSON.parse(description)) : description
+  const markup = isJsonString(description) ? ReactHtmlParser(JSON.parse(description)) : ReactHtmlParser(description)
 
   return (
     <EuiPanel style={{ position: 'relative', height: 600, width: '100%', marginLeft: 40, padding: 30, boxSizing: 'border-box' }}>
