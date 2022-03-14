@@ -1,9 +1,16 @@
-import { EuiTitle, EuiFlexGroup, EuiFlexItem, EuiStat, EuiPanel } from '@elastic/eui'
+import { EuiTitle, EuiFlexGroup, EuiStat, EuiPanel, EuiText } from '@elastic/eui'
 import { HouseInterface } from '../../../types'
+import { formatter } from '../helpers';
 
 function HouseContent({ house }: { house: HouseInterface }) {
   const { address, squareFeet, bedrooms, datePurchased, bathrooms, purchasePrice, description } = house
+  const displaySquareFeet = new Intl.NumberFormat().format(squareFeet)
   const displayDate = new Date(datePurchased).toLocaleString();
+  const displayPrice = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(purchasePrice)
+
   return (
     <EuiPanel style={{ height: 600, width: '100%', marginLeft: 40, padding: 30, boxSizing: 'border-box' }}>
       <EuiTitle size='l' >
@@ -18,13 +25,17 @@ function HouseContent({ house }: { house: HouseInterface }) {
           alignItems: 'center'
         }}>
 
-        <EuiStat titleSize='m' title={`${squareFeet} ft\u00B2`} description="Square footage" />
+        <EuiStat titleSize='m' title={`${displaySquareFeet} ft\u00B2`} description="Square footage" />
         <EuiStat titleSize='m' title={`${bedrooms}`} description="Bedrooms" />
         <EuiStat titleSize='m' title={`${displayDate}`} description="Date purchased" />
         <EuiStat titleSize='m' title={`${bathrooms}`} description="Bathrooms" />
-        <EuiStat titleSize='m' title={`$${purchasePrice}`} description="Purchase price" />
+        <EuiStat titleSize='m' title={`${displayPrice}`} description="Purchase price" />
       </EuiFlexGroup>
-
+      <br />
+      <EuiText textAlign='left'>
+        <h2>Description: </h2>
+        <p>{description}</p>
+      </EuiText>
     </EuiPanel>
   )
 }
